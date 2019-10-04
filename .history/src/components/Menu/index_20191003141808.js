@@ -1,0 +1,15 @@
+import React from 'react';
+import { SideNav, Nav } from 'react-sidenav';
+// import { Container } from './styles';
+
+export default function Menu() {
+  return (
+    <SideNav defaultSelectedPath="1">
+      <Nav id="1">
+        <h4>ddcd</h4>
+      </Nav>
+      <Nav id="2" />
+      <Nav id="3" />
+    </SideNav>
+  );
+}
