@@ -1,0 +1,41 @@
+import styled from 'styled-components';
+
+export const Container = styled.div`
+  margin: 15px 15px 15px;
+  flex: 1;
+  width: 98%;
+  height: 620px;
+  overflow: scroll;
+  align-items: center;
+  justify-content: center;
+
+  h3 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  textarea {
+    background: rgba(0, 0, 0, 0.1);
+    border: 0;
+    margin-top: 5px;
+    margin-bottom: -10px;
+    border-radius: 4px;
+    height: 34px;
+    width: 400px;
+    font-size: 16px;
+    text-align: center;
+    padding: 0 15px;
+    color: rgba(0, 0, 0, 0.9);
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+`;
+
+export const Teste = styled.div`
+  width: 80%;
+  align-items: center;
+  margin: 0 auto;
+`;
