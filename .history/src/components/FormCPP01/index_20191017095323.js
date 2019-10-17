@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import Fab from '@material-ui/core/Fab';
-import { toast } from 'react-toastify';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
 
-import { Container, Teste, Loading } from './styles';
-import { apiInternal } from '../../services/api';
+import { Container, Teste } from './styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,15 +21,11 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'left',
     fontSize: 16,
     color: theme.palette.text.secondary
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 }));
 
-export default function Information({ person, elogio, punicao, showForm }) {
+export default function Information({ person, elogios, punicaos, tempos }) {
+  console.log(tempos);
   const [checkPCPI, setCheckPCPI] = useState(false);
   const [checkARorDFAC, setCheckARorDFAC] = useState(false);
   const [checkPPorFD, setCheckPPorFD] = useState(false);
@@ -42,94 +34,18 @@ export default function Information({ person, elogio, punicao, showForm }) {
   const [checkEFA, setCheckEFA] = useState(false);
   const [checkDOO, setCheckDOO] = useState(false);
   const [checkAgregado, setCheckAgregado] = useState(false);
-  const [idpessoa, setIdpessoa] = useState(0);
-  const [motivo, setMotivo] = useState('');
-  const [status, setStatus] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    async function personInformation() {
-      const info = await JSON.parse(localStorage.getItem('data'));
-      await setIdpessoa(info.idpessoa);
-    }
-
-    async function handleGetForm() {
-      const response = await apiInternal.get(`formcpp01/${person.idpessoa}`);
-
-      if (response.data !== null) {
-        setCheckPCPI(response.data.checkpcpi);
-        setCheckARorDFAC(response.data.checkarorfac);
-        setCheckPPorFD(response.data.checkpporfd);
-        setCheckRCD(response.data.checkrcd);
-        setCheckLTPS(response.data.checkltps);
-        setCheckEFA(response.data.checkefa);
-        setCheckDOO(response.data.checkdoo);
-        setCheckAgregado(response.data.checkagregado);
-        setStatus(response.data.status);
-        setMotivo(response.data.motivo);
-      }
-      setLoading(false);
-    }
-
-    handleGetForm();
-    personInformation();
-  }, [person.idpessoa]);
-
-  async function handleSave() {
-    const response = await apiInternal
-      .post('formcpp01', {
-        checkpcpi: checkPCPI,
-        checkarorfac: checkARorDFAC,
-        checkpporfd: checkPPorFD,
-        checkrcd: checkRCD,
-        checkltps: checkLTPS,
-        checkefa: checkEFA,
-        checkdoo: checkDOO,
-        checkagregado: checkAgregado,
-        idpreechedor: idpessoa,
-        idpessoa: person.idpessoa,
-        status: true,
-        motivo
-      })
-      .catch(err => {
-        console.log(err);
-        toast.error('O Militar já possui um formulário cadastrado');
-      });
-
-    if (response) {
-      setStatus(true);
-      toast.success(`Formulário de informação funcional inserido com sucesso!`);
-    }
-  }
 
   const classes = useStyles();
   return (
     <Container>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={loading}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <Loading color="#274293" size={60} />
-      </Modal>
-      <h3>
-        FORMULÁRIO DE INFORMAÇÃO FUNCIONAL{' '}
-        {status && <strong> Finalizado</strong>}{' '}
-      </h3>
+      <h3>FORMULÁRIO DE INFORMAÇÃO FUNCIONAL</h3>
       <hr />
       <div className={classes.root}>
         <Teste>
           <Grid container spacing={1}>
             <Grid item xs={8}>
               <Paper className={classes.paper}>
-                Nome: {person.Graduacao.graduacao} {person.rg} {person.nome}
+                Nome: CB 23434 JOSÉ NILSON SILVA DOS SANTOS
               </Paper>
             </Grid>
             <Grid item xs={4}>
@@ -137,11 +53,11 @@ export default function Information({ person, elogio, punicao, showForm }) {
             </Grid>
             <Grid item xs={4}>
               <Paper className={classes.paper}>
-                Medalhas e Condecorações: {person.Condecoracoes.length}
+                Medalhas e Condecorações: 6
               </Paper>
             </Grid>
             <Grid item xs={4}>
-              <Paper className={classes.paper}>Elogios: {elogio}</Paper>
+              <Paper className={classes.paper}>Elogios: 10</Paper>
             </Grid>
             <Grid item xs={4}>
               <Paper className={classes.paper}>
@@ -152,13 +68,13 @@ export default function Information({ person, elogio, punicao, showForm }) {
           <h3>PUNIÇÕES DISCIPLINARES</h3>
           <Grid container spacing={1}>
             <Grid item xs={4}>
-              <Paper className={classes.paper}>Prisão: {punicao}</Paper>
+              <Paper className={classes.paper}>Prisão: 0</Paper>
             </Grid>
             <Grid item xs={4}>
-              <Paper className={classes.paper}>Detenção: {punicao}</Paper>
+              <Paper className={classes.paper}>Detenção: 0</Paper>
             </Grid>
             <Grid item xs={4}>
-              <Paper className={classes.paper}>Repreensão: {punicao}</Paper>
+              <Paper className={classes.paper}>Repreensão: 0</Paper>
             </Grid>
           </Grid>
           <br />
@@ -334,32 +250,15 @@ export default function Information({ person, elogio, punicao, showForm }) {
                   name="radio-button-demo"
                   inputProps={{ 'aria-label': 'Q' }}
                 />
-                | Se sim, qual o motivo:{' '}
-                <textarea
-                  type="text"
-                  value={motivo}
-                  onChange={e => setMotivo(e.target.value)}
-                />
+                | Se sim, qual o motivo: <textarea type="text" />
                 <div style={{ textAlign: 'right', marginTop: -45 }}>
-                  {!status && (
-                    <Fab
-                      variant="extended"
-                      color="primary"
-                      aria-label="add"
-                      className={classes.margin}
-                      onClick={() => handleSave()}
-                    >
-                      Salvar
-                    </Fab>
-                  )}
                   <Fab
                     variant="extended"
-                    color="secondary"
+                    color="primary"
                     aria-label="add"
                     className={classes.margin}
-                    onClick={showForm}
                   >
-                    Voltar
+                    Salvar
                   </Fab>
                 </div>
               </Paper>

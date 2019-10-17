@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Spin } from 'react-loading-io';
 
 export const Container = styled.div`
   margin: 15px 15px 15px;
@@ -42,8 +41,4 @@ export const Teste = styled.div`
   width: 80%;
   align-items: center;
   margin: 0 auto;
-`;
-
-export const Loading = styled(Spin)`
-  font-size: 20px;
 `;

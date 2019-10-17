@@ -204,7 +204,6 @@ export default function Cpo() {
           elogio={elogios.length}
           tempo={tempos}
           punicao={punicaos.length}
-          showForm={() => setFormCPP01(!formCPP01) + setBody(!body)}
         />
       )}
       {body && (

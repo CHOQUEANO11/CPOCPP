@@ -25,11 +25,6 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'left',
     fontSize: 16,
     color: theme.palette.text.secondary
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 }));
 
@@ -74,7 +69,7 @@ export default function Information({ person, elogio, punicao, showForm }) {
 
     handleGetForm();
     personInformation();
-  }, [person.idpessoa]);
+  }, []);
 
   async function handleSave() {
     const response = await apiInternal
@@ -337,7 +332,6 @@ export default function Information({ person, elogio, punicao, showForm }) {
                 | Se sim, qual o motivo:{' '}
                 <textarea
                   type="text"
-                  value={motivo}
                   onChange={e => setMotivo(e.target.value)}
                 />
                 <div style={{ textAlign: 'right', marginTop: -45 }}>

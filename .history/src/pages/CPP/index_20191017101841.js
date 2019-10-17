@@ -201,10 +201,9 @@ export default function Cpo() {
       {formCPP01 && (
         <FormCPP01
           person={person}
-          elogio={elogios.length}
-          tempo={tempos}
-          punicao={punicaos.length}
-          showForm={() => setFormCPP01(!formCPP01) + setBody(!body)}
+          {...elogios}
+          {...tempos}
+          {...punicaos.length}
         />
       )}
       {body && (

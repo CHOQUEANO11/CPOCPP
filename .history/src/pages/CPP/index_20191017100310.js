@@ -200,11 +200,10 @@ export default function Cpo() {
       </Modal>
       {formCPP01 && (
         <FormCPP01
-          person={person}
-          elogio={elogios.length}
-          tempo={tempos}
-          punicao={punicaos.length}
-          showForm={() => setFormCPP01(!formCPP01) + setBody(!body)}
+          {...person}
+          {...elogios.length}
+          {...tempos}
+          {...punicaos.length}
         />
       )}
       {body && (

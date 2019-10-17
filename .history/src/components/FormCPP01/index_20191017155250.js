@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 
-import { Container, Teste, Loading } from './styles';
+import { Container, Teste } from './styles';
 import { apiInternal } from '../../services/api';
 
 const useStyles = makeStyles(theme => ({
@@ -25,11 +25,6 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'left',
     fontSize: 16,
     color: theme.palette.text.secondary
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 }));
 
@@ -48,7 +43,6 @@ export default function Information({ person, elogio, punicao, showForm }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     async function personInformation() {
       const info = await JSON.parse(localStorage.getItem('data'));
       await setIdpessoa(info.idpessoa);
@@ -69,12 +63,12 @@ export default function Information({ person, elogio, punicao, showForm }) {
         setStatus(response.data.status);
         setMotivo(response.data.motivo);
       }
-      setLoading(false);
+      setLoading(true);
     }
 
     handleGetForm();
     personInformation();
-  }, [person.idpessoa]);
+  }, []);
 
   async function handleSave() {
     const response = await apiInternal
@@ -337,7 +331,6 @@ export default function Information({ person, elogio, punicao, showForm }) {
                 | Se sim, qual o motivo:{' '}
                 <textarea
                   type="text"
-                  value={motivo}
                   onChange={e => setMotivo(e.target.value)}
                 />
                 <div style={{ textAlign: 'right', marginTop: -45 }}>

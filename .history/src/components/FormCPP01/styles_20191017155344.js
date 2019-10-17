@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Spin } from 'react-loading-io';
 
 export const Container = styled.div`
   margin: 15px 15px 15px;

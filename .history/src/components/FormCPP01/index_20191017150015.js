@@ -4,11 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Radio from '@material-ui/core/Radio';
 import Fab from '@material-ui/core/Fab';
-import { toast } from 'react-toastify';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
 
-import { Container, Teste, Loading } from './styles';
+import { Container, Teste } from './styles';
 import { apiInternal } from '../../services/api';
 
 const useStyles = makeStyles(theme => ({
@@ -25,11 +22,6 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'left',
     fontSize: 16,
     color: theme.palette.text.secondary
-  },
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 }));
 
@@ -43,86 +35,37 @@ export default function Information({ person, elogio, punicao, showForm }) {
   const [checkDOO, setCheckDOO] = useState(false);
   const [checkAgregado, setCheckAgregado] = useState(false);
   const [idpessoa, setIdpessoa] = useState(0);
-  const [motivo, setMotivo] = useState('');
-  const [status, setStatus] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     async function personInformation() {
       const info = await JSON.parse(localStorage.getItem('data'));
       await setIdpessoa(info.idpessoa);
     }
-
-    async function handleGetForm() {
-      const response = await apiInternal.get(`formcpp01/${person.idpessoa}`);
-
-      if (response.data !== null) {
-        setCheckPCPI(response.data.checkpcpi);
-        setCheckARorDFAC(response.data.checkarorfac);
-        setCheckPPorFD(response.data.checkpporfd);
-        setCheckRCD(response.data.checkrcd);
-        setCheckLTPS(response.data.checkltps);
-        setCheckEFA(response.data.checkefa);
-        setCheckDOO(response.data.checkdoo);
-        setCheckAgregado(response.data.checkagregado);
-        setStatus(response.data.status);
-        setMotivo(response.data.motivo);
-      }
-      setLoading(false);
-    }
-
-    handleGetForm();
     personInformation();
-  }, [person.idpessoa]);
+  }, []);
 
   async function handleSave() {
-    const response = await apiInternal
-      .post('formcpp01', {
-        checkpcpi: checkPCPI,
-        checkarorfac: checkARorDFAC,
-        checkpporfd: checkPPorFD,
-        checkrcd: checkRCD,
-        checkltps: checkLTPS,
-        checkefa: checkEFA,
-        checkdoo: checkDOO,
-        checkagregado: checkAgregado,
-        idpreechedor: idpessoa,
-        idpessoa: person.idpessoa,
-        status: true,
-        motivo
-      })
-      .catch(err => {
-        console.log(err);
-        toast.error('O Militar já possui um formulário cadastrado');
-      });
+    const response = await apiInternal.post('formcpp01', {
+      checkpcpi: checkPCPI,
+      checkarorfac: checkARorDFAC,
+      checkpporfd: checkPPorFD,
+      checkrcd: checkRCD,
+      checkltps: checkLTPS,
+      checkefa: checkEFA,
+      checkdoo: checkDOO,
+      checkagregado: checkAgregado,
+      idpreechedor: idpessoa,
+      idpessoa: person.idpessoa,
+      status: true
+    });
 
-    if (response) {
-      setStatus(true);
-      toast.success(`Formulário de informação funcional inserido com sucesso!`);
-    }
+    console.log(response);
   }
 
   const classes = useStyles();
   return (
     <Container>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={loading}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <Loading color="#274293" size={60} />
-      </Modal>
-      <h3>
-        FORMULÁRIO DE INFORMAÇÃO FUNCIONAL{' '}
-        {status && <strong> Finalizado</strong>}{' '}
-      </h3>
+      <h3>FORMULÁRIO DE INFORMAÇÃO FUNCIONAL</h3>
       <hr />
       <div className={classes.root}>
         <Teste>
@@ -335,23 +278,17 @@ export default function Information({ person, elogio, punicao, showForm }) {
                   inputProps={{ 'aria-label': 'Q' }}
                 />
                 | Se sim, qual o motivo:{' '}
-                <textarea
-                  type="text"
-                  value={motivo}
-                  onChange={e => setMotivo(e.target.value)}
-                />
+                <textarea type="text" placeholder="Digite aqui o motivo..." />
                 <div style={{ textAlign: 'right', marginTop: -45 }}>
-                  {!status && (
-                    <Fab
-                      variant="extended"
-                      color="primary"
-                      aria-label="add"
-                      className={classes.margin}
-                      onClick={() => handleSave()}
-                    >
-                      Salvar
-                    </Fab>
-                  )}
+                  <Fab
+                    variant="extended"
+                    color="primary"
+                    aria-label="add"
+                    className={classes.margin}
+                    onClick={() => handleSave()}
+                  >
+                    Salvar
+                  </Fab>
                   <Fab
                     variant="extended"
                     color="secondary"

@@ -198,15 +198,7 @@ export default function Cpo() {
       >
         <Loading color="#274293" size={60} />
       </Modal>
-      {formCPP01 && (
-        <FormCPP01
-          person={person}
-          elogio={elogios.length}
-          tempo={tempos}
-          punicao={punicaos.length}
-          showForm={() => setFormCPP01(!formCPP01) + setBody(!body)}
-        />
-      )}
+      {formCPP01 && <FormCPP01 {(person, elogios)} />}
       {body && (
         <>
           <Paper className={classes.root}>
