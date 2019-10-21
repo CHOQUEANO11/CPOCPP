@@ -14,7 +14,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import { toast } from 'react-toastify';
 
 import { Container, Form, Loading } from './styles';
 import { apiInternal } from '../../services/api';
@@ -175,58 +174,48 @@ export default function FormCPP02({ person, showForm }) {
   }, [person.idpessoa]);
 
   async function save() {
-    try {
-      const response = await apiInternal.post('formcpp02', {
-        idpreechedor: idpessoa,
-        idpessoa: person.idpessoa,
-        lav: `${JSON.stringify(lav)}`,
-        valuelav: `${JSON.stringify(valueLav)}`,
-        nr: `${JSON.stringify(nr)}`,
-        valuenr: `${JSON.stringify(valueNr)}`,
-        cfs: `${JSON.stringify(cfs)}`,
-        valuecfs: `${JSON.stringify(valueCfs)}`,
-        ep: `${JSON.stringify(ep)}`,
-        valueep: `${JSON.stringify(valueEp)}`,
-        crd: `${JSON.stringify(crd)}`,
-        valuecrd: `${JSON.stringify(valueCrd)}`,
-        fe: `${JSON.stringify(fe)}`,
-        valuefe: `${JSON.stringify(valueFe)}`,
-        cd: `${JSON.stringify(cd)}`,
-        valuecd: `${JSON.stringify(valueCd)}`,
-        ed: `${JSON.stringify(ed)}`,
-        valueed: `${JSON.stringify(valueEd)}`,
-        ca: `${JSON.stringify(ca)}`,
-        valueca: `${JSON.stringify(valueCa)}`,
-        ap: `${JSON.stringify(ap)}`,
-        valueap: `${JSON.stringify(valueAp)}`,
-        ecrh: `${JSON.stringify(ecrh)}`,
-        valueecrh: `${JSON.stringify(valueEcrh)}`,
-        cc: `${JSON.stringify(cc)}`,
-        valuecc: `${JSON.stringify(valueCc)}`,
-        cl: `${JSON.stringify(cl)}`,
-        valuecl: `${JSON.stringify(valueCl)}`,
-        cp: `${JSON.stringify(cp)}`,
-        valuecp: `${JSON.stringify(valueCp)}`,
-        pz: `${JSON.stringify(pz)}`,
-        valuepz: `${JSON.stringify(valuePz)}`,
-        coe: `${JSON.stringify(coe)}`,
-        valuecoe: `${JSON.stringify(valueCoe)}`,
-        rf: `${JSON.stringify(rf)}`,
-        valuerf: `${JSON.stringify(valueRf)}`,
-        dt: `${JSON.stringify(dt)}`,
-        valuedt: `${JSON.stringify(valueDt)}`,
-        status: true
-      });
-      if (response) {
-        setStatus(true);
-        toast.success(
-          `Formulário de informação funcional inserido com sucesso!`
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error('O Militar já possui um formulário cadastrado');
-    }
+    const response = await apiInternal.post('formcpp02', {
+      idpreechedor: idpessoa,
+      idpessoa: person.idpessoa,
+      lav: `${JSON.stringify(lav)}`,
+      valuelav: `${JSON.stringify(valueLav)}`,
+      nr: `${JSON.stringify(nr)}`,
+      valuenr: `${JSON.stringify(valueNr)}`,
+      cfs: `${JSON.stringify(cfs)}`,
+      valuecfs: `${JSON.stringify(valueCfs)}`,
+      ep: `${JSON.stringify(ep)}`,
+      valueep: `${JSON.stringify(valueEp)}`,
+      crd: `${JSON.stringify(crd)}`,
+      valuecrd: `${JSON.stringify(valueCrd)}`,
+      fe: `${JSON.stringify(fe)}`,
+      valuefe: `${JSON.stringify(valueFe)}`,
+      cd: `${JSON.stringify(cd)}`,
+      valuecd: `${JSON.stringify(valueCd)}`,
+      ed: `${JSON.stringify(ed)}`,
+      valueed: `${JSON.stringify(valueEd)}`,
+      ca: `${JSON.stringify(ca)}`,
+      valueca: `${JSON.stringify(valueCa)}`,
+      ap: `${JSON.stringify(ap)}`,
+      valueap: `${JSON.stringify(valueAp)}`,
+      ecrh: `${JSON.stringify(ecrh)}`,
+      valueecrh: `${JSON.stringify(valueEcrh)}`,
+      cc: `${JSON.stringify(cc)}`,
+      valuecc: `${JSON.stringify(valueCc)}`,
+      cl: `${JSON.stringify(cl)}`,
+      valuecl: `${JSON.stringify(valueCl)}`,
+      cp: `${JSON.stringify(cp)}`,
+      valuecp: `${JSON.stringify(valueCp)}`,
+      pz: `${JSON.stringify(pz)}`,
+      valuepz: `${JSON.stringify(valuePz)}`,
+      coe: `${JSON.stringify(coe)}`,
+      valuecoe: `${JSON.stringify(valueCoe)}`,
+      rf: `${JSON.stringify(rf)}`,
+      valuerf: `${JSON.stringify(valueRf)}`,
+      dt: `${JSON.stringify(dt)}`,
+      valuedt: `${JSON.stringify(valueDt)}`,
+      status: true
+    });
+    console.log(response);
   }
 
   return (

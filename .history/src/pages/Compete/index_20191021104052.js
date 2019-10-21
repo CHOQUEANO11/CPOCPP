@@ -1,36 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import Divider from '@material-ui/core/Divider';
-import DirectionsIcon from '@material-ui/icons/PersonAdd';
 import TrashIcon from '@material-ui/icons/Clear';
+import DirectionsIcon from '@material-ui/icons/PersonAdd';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import TextField from '@material-ui/core/TextField';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
+import { toast } from 'react-toastify';
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import { toast } from 'react-toastify';
-import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
-import {
-  Container,
-  List,
-  Loading,
-  Form,
-  Moldura,
-  ContainerInfo
-} from './styles';
-import cpo01 from '../../assets/cpo01.png';
-import cpo02 from '../../assets/cpo02.png';
-import { apiInternal, api } from '../../services/api';
+import { api, apiInternal } from '../../services/api';
+
+import { Container, List, Loading, Form, Moldura } from './styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,16 +33,6 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 10,
     flexFlow: 'wrap',
     justifyContent: 'center'
-  },
-  card: {
-    maxWidth: 345,
-    maxHeight: 345,
-    width: 345,
-    height: 284,
-    marginTop: 16
-  },
-  media: {
-    height: 140
   },
   modal: {
     display: 'flex',
@@ -79,7 +58,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Cpo() {
+export default function Compete() {
   const [search, setSearch] = useState('');
   const [people, setPeople] = useState([]);
   const [elogios, setElogios] = useState([]);
@@ -91,32 +70,21 @@ export default function Cpo() {
   const [Img, setImg] = useState('');
   const [infoCard, setInfoCard] = useState([]);
 
-  useEffect(() => {
-    setLoading(true);
-    async function handleAllPeople() {
-      const response = await apiInternal.get('compete');
-      await setPeople(response.data);
-      await setLoading(false);
-    }
-    handleAllPeople();
-  }, []);
+  const classes = useStyles();
 
   async function handleSearch(e) {
     if (await (e.length > 8)) {
-      const response = await apiInternal.get(`compete/${e}`);
-      await setPeople(response.data);
+      const response = await api.get(`api/v1/pessoa/condecoracao/find/${e}`);
+
+      await setPeople(response.data.payload);
     }
   }
 
   async function handleSerachId(e) {
     await setImg(e.idpessoa.toString());
+    await setPerson(e);
+    console.log(e);
     await setLoading(true);
-
-    const searchPerson = await api.get(
-      `api/v1/pessoa/condecoracao/find/${e.nome}`
-    );
-    await setPerson(searchPerson.data.payload[0]);
-
     const elogio = await api.get(`api/v1/pessoa/elogio/id/${e.idpessoa}`);
     if (elogio.data.payload.elogios.length >= 0) {
       setLoading(false);
@@ -129,12 +97,6 @@ export default function Cpo() {
     const tempo = await api.get(`api/v1/pessoa/tempo/id/${e.idpessoa}`);
     await setTempos(tempo.data.payload);
     await setCard(false);
-  }
-
-  function openInfo() {
-    setCard(true);
-    setSearch('');
-    setInfoCard('');
   }
 
   function information(a, e) {
@@ -174,26 +136,43 @@ export default function Cpo() {
     }
   }
 
-  const classes = useStyles();
+  function openInfo() {
+    setCard(true);
+    setSearch('');
+    setInfoCard('');
+  }
+
+  async function addLimitVacancy() {
+    const response = await apiInternal
+      .post('compete', {
+        idpessoa: person.idpessoa,
+        idunidade: person.idunidade,
+        idgraduacao: person.idgraduacao,
+        graduacao: person.Graduacao.graduacao,
+        nome: person.nome,
+        sigla_unidade: person.SiglaUnidade,
+        hierarquia: person.Graduacao.hierarquia
+      })
+      .catch(err => {
+        console.log(err);
+        toast.error(
+          `${person.Graduacao.graduacao} ${person.nome_guerra} já foi adicionado no limite de vaga!`
+        );
+      });
+
+    if (response) {
+      toast.success(
+        `${person.Graduacao.graduacao} ${person.nome_guerra}  foi adicionado no limite de vaga!`
+      );
+    }
+  }
+
   let foto = Img.split('');
   foto = foto.join('/');
   const url = `https://sigpol.pm.pa.gov.br/upload/pessoa/${foto}/foto.jpg`;
 
   return (
     <>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={loading}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <Loading color="#274293" size={60} />
-      </Modal>
       <Paper className={classes.root}>
         <IconButton className={classes.iconButton} aria-label="menu">
           <MenuIcon />
@@ -204,7 +183,7 @@ export default function Cpo() {
           }
           className={classes.input}
           value={search}
-          placeholder="Pesquisar militar no limite de vaga CPO (Nome)"
+          placeholder="Pesquisar militar para adiciona-lo no limite de vaga (CPF ou Nome)"
           inputProps={{ 'aria-label': 'search google maps' }}
         />
         <IconButton className={classes.iconButton} aria-label="search">
@@ -219,15 +198,27 @@ export default function Cpo() {
           {card ? <DirectionsIcon /> : <TrashIcon onClick={openInfo} />}
         </IconButton>
       </Paper>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={loading}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500
+        }}
+      >
+        <Loading color="#274293" size={60} />
+      </Modal>
+
       <Container>
         {card &&
           people.map(item => (
             <List key={item.idpessoa} onClick={() => handleSerachId(item)}>
-              {item.hierarquia <= 6 && (
-                <div>
-                  {item.graduacao} {item.nome} - {item.sigla_unidade}
-                </div>
-              )}
+              {item.Graduacao.graduacao} {item.rg} {item.nome} -{' '}
+              {item.SiglaUnidade}
             </List>
           ))}
         {!card && (
@@ -359,73 +350,36 @@ export default function Cpo() {
                 />
               </div>
             </Form>
-            <ContainerInfo>
-              <TextField
-                id="outlined-full-width"
-                label="Informações"
-                className={classes.textField}
-                multiline
-                rows="13"
-                style={{
-                  width: 400,
-                  flex: 1
-                }}
-                placeholder="ex: Elogio ..."
-                helperText="Clique onde houver QTD para verificar o conteúdo!"
-                margin="normal"
-                variant="outlined"
-                value={infoCard}
-                InputLabelProps={{
-                  shrink: true
-                }}
-              />
-              <Card className={classes.card}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={cpo01}
-                    title="Contemplative Reptile"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Habilidades, Competências e Valores
-                    </Typography>
-                    <br />
-                    <br />
-                    <Typography
-                      variant="body2"
-                      style={{ color: '#EB144C' }}
-                      component="p"
-                    >
-                      *clique para preencher
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-              &nbsp;&nbsp;
-              <Card className={classes.card}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={cpo02}
-                    title="Contemplative Reptile"
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      FICHA DE AVALIAÇÃO DE POTENCIAL E EXPERIÊNCIA PROFISSIONAL
-                      DE OFICIAL
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      style={{ color: '#EB144C' }}
-                      component="p"
-                    >
-                      *clique para preencher
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </ContainerInfo>
+            <TextField
+              id="outlined-full-width"
+              label="Informações"
+              multiline
+              rows="13"
+              style={{
+                width: 1305,
+                flex: 1
+              }}
+              placeholder="ex: Elogio ..."
+              helperText="Clique onde houver QTD para verificar o conteúdo!"
+              margin="normal"
+              variant="outlined"
+              value={infoCard}
+              InputLabelProps={{
+                shrink: true
+              }}
+            />
+            <div style={{ textAlign: 'right' }}>
+              <Fab
+                variant="extended"
+                color="primary"
+                aria-label="add"
+                className={classes.margin}
+                onClick={() => addLimitVacancy()}
+              >
+                <AddIcon className={classes.extendedIcon} />
+                Limite de vagas
+              </Fab>
+            </div>
           </>
         )}
       </Container>

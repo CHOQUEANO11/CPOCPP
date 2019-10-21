@@ -14,7 +14,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import { toast } from 'react-toastify';
 
 import { Container, Form, Loading } from './styles';
 import { apiInternal } from '../../services/api';
@@ -41,7 +40,6 @@ export default function FormCPP02({ person, showForm }) {
   const [idpessoa, setIdpessoa] = useState('');
   const [periodo, setPeriodo] = useState('');
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(false);
 
   const check = {
     checkedE: false,
@@ -113,6 +111,7 @@ export default function FormCPP02({ person, showForm }) {
     async function personInformation() {
       const info = await JSON.parse(localStorage.getItem('data'));
       await setIdpessoa(info.idpessoa);
+      setLoading(false);
     }
 
     async function handleGetForm() {
@@ -155,10 +154,7 @@ export default function FormCPP02({ person, showForm }) {
         setValueRf(JSON.parse(response.data.valuerf));
         setDt(JSON.parse(response.data.dt));
         setValueDt(JSON.parse(response.data.valuedt));
-        setStatus(response.data.status);
-        setLoading(false);
       }
-      setLoading(false);
     }
     const date = new Date();
     const ano = date.getFullYear();
@@ -172,61 +168,51 @@ export default function FormCPP02({ person, showForm }) {
 
     handleGetForm();
     personInformation();
-  }, [person.idpessoa]);
+  }, []);
 
   async function save() {
-    try {
-      const response = await apiInternal.post('formcpp02', {
-        idpreechedor: idpessoa,
-        idpessoa: person.idpessoa,
-        lav: `${JSON.stringify(lav)}`,
-        valuelav: `${JSON.stringify(valueLav)}`,
-        nr: `${JSON.stringify(nr)}`,
-        valuenr: `${JSON.stringify(valueNr)}`,
-        cfs: `${JSON.stringify(cfs)}`,
-        valuecfs: `${JSON.stringify(valueCfs)}`,
-        ep: `${JSON.stringify(ep)}`,
-        valueep: `${JSON.stringify(valueEp)}`,
-        crd: `${JSON.stringify(crd)}`,
-        valuecrd: `${JSON.stringify(valueCrd)}`,
-        fe: `${JSON.stringify(fe)}`,
-        valuefe: `${JSON.stringify(valueFe)}`,
-        cd: `${JSON.stringify(cd)}`,
-        valuecd: `${JSON.stringify(valueCd)}`,
-        ed: `${JSON.stringify(ed)}`,
-        valueed: `${JSON.stringify(valueEd)}`,
-        ca: `${JSON.stringify(ca)}`,
-        valueca: `${JSON.stringify(valueCa)}`,
-        ap: `${JSON.stringify(ap)}`,
-        valueap: `${JSON.stringify(valueAp)}`,
-        ecrh: `${JSON.stringify(ecrh)}`,
-        valueecrh: `${JSON.stringify(valueEcrh)}`,
-        cc: `${JSON.stringify(cc)}`,
-        valuecc: `${JSON.stringify(valueCc)}`,
-        cl: `${JSON.stringify(cl)}`,
-        valuecl: `${JSON.stringify(valueCl)}`,
-        cp: `${JSON.stringify(cp)}`,
-        valuecp: `${JSON.stringify(valueCp)}`,
-        pz: `${JSON.stringify(pz)}`,
-        valuepz: `${JSON.stringify(valuePz)}`,
-        coe: `${JSON.stringify(coe)}`,
-        valuecoe: `${JSON.stringify(valueCoe)}`,
-        rf: `${JSON.stringify(rf)}`,
-        valuerf: `${JSON.stringify(valueRf)}`,
-        dt: `${JSON.stringify(dt)}`,
-        valuedt: `${JSON.stringify(valueDt)}`,
-        status: true
-      });
-      if (response) {
-        setStatus(true);
-        toast.success(
-          `Formulário de informação funcional inserido com sucesso!`
-        );
-      }
-    } catch (err) {
-      console.log(err);
-      toast.error('O Militar já possui um formulário cadastrado');
-    }
+    const response = await apiInternal.post('formcpp02', {
+      idpreechedor: idpessoa,
+      idpessoa: person.idpessoa,
+      lav: `${JSON.stringify(lav)}`,
+      valuelav: `${JSON.stringify(valueLav)}`,
+      nr: `${JSON.stringify(nr)}`,
+      valuenr: `${JSON.stringify(valueNr)}`,
+      cfs: `${JSON.stringify(cfs)}`,
+      valuecfs: `${JSON.stringify(valueCfs)}`,
+      ep: `${JSON.stringify(ep)}`,
+      valueep: `${JSON.stringify(valueEp)}`,
+      crd: `${JSON.stringify(crd)}`,
+      valuecrd: `${JSON.stringify(valueCrd)}`,
+      fe: `${JSON.stringify(fe)}`,
+      valuefe: `${JSON.stringify(valueFe)}`,
+      cd: `${JSON.stringify(cd)}`,
+      valuecd: `${JSON.stringify(valueCd)}`,
+      ed: `${JSON.stringify(ed)}`,
+      valueed: `${JSON.stringify(valueEd)}`,
+      ca: `${JSON.stringify(ca)}`,
+      valueca: `${JSON.stringify(valueCa)}`,
+      ap: `${JSON.stringify(ap)}`,
+      valueap: `${JSON.stringify(valueAp)}`,
+      ecrh: `${JSON.stringify(ecrh)}`,
+      valueecrh: `${JSON.stringify(valueEcrh)}`,
+      cc: `${JSON.stringify(cc)}`,
+      valuecc: `${JSON.stringify(valueCc)}`,
+      cl: `${JSON.stringify(cl)}`,
+      valuecl: `${JSON.stringify(valueCl)}`,
+      cp: `${JSON.stringify(cp)}`,
+      valuecp: `${JSON.stringify(valueCp)}`,
+      pz: `${JSON.stringify(pz)}`,
+      valuepz: `${JSON.stringify(valuePz)}`,
+      coe: `${JSON.stringify(coe)}`,
+      valuecoe: `${JSON.stringify(valueCoe)}`,
+      rf: `${JSON.stringify(rf)}`,
+      valuerf: `${JSON.stringify(valueRf)}`,
+      dt: `${JSON.stringify(dt)}`,
+      valuedt: `${JSON.stringify(valueDt)}`,
+      status: true
+    });
+    console.log(response);
   }
 
   return (
@@ -245,8 +231,7 @@ export default function FormCPP02({ person, showForm }) {
         <Loading color="#274293" size={60} />
       </Modal>
       <h3 style={{ textAlign: 'center' }}>
-        FORMULÁRIO AVALIÁTIVO DE DESEMPENHO DE PRAÇAS{' '}
-        {status && <strong>Finalizado</strong>}
+        FORMULÁRIO AVALIÁTIVO DE DESEMPENHO DE PRAÇAS
       </h3>
       <div
         style={{
@@ -2644,17 +2629,15 @@ export default function FormCPP02({ person, showForm }) {
             </Paper>
           </Grid>
           <div style={{ textAlign: 'right', marginBottom: 5 }}>
-            {!status && (
-              <Fab
-                variant="extended"
-                color="primary"
-                aria-label="add"
-                className={classes.margin}
-                onClick={() => save()}
-              >
-                Salvar
-              </Fab>
-            )}
+            <Fab
+              variant="extended"
+              color="primary"
+              aria-label="add"
+              className={classes.margin}
+              onClick={() => save()}
+            >
+              Salvar
+            </Fab>
 
             <Fab
               variant="extended"

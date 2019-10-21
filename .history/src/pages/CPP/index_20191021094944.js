@@ -246,17 +246,10 @@ export default function Cpo() {
             {card &&
               people.map(item => (
                 <List key={item.idpessoa} onClick={() => handleSerachId(item)}>
-                  {item.hierarquia > 6 && (
-                    <div>
-                      {item.graduacao} {item.nome} - {item.sigla_unidade}{' '}
-                      {item.formcpp01_id !== null && (
-                        <strong>| Formulário 01 preenchido,</strong>
-                      )}{' '}
-                      {item.formcpp02_id !== null && (
-                        <strong>Formulário 02 preenchido,</strong>
-                      )}
-                    </div>
-                  )}
+                  {item.graduacao} {item.nome} - {item.sigla_unidade} |{' '}
+                  {item.formcpp01_id !== null &&
+                    <strong>Formulário 01 preenchido</strong>{' '}
+                  {item.formcpp02_id !== null && 'Formulário 02 preenchido'}
                 </List>
               ))}
             {!card && (

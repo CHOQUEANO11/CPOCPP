@@ -2644,18 +2644,16 @@ export default function FormCPP02({ person, showForm }) {
             </Paper>
           </Grid>
           <div style={{ textAlign: 'right', marginBottom: 5 }}>
-            {!status && (
-              <Fab
-                variant="extended"
-                color="primary"
-                aria-label="add"
-                className={classes.margin}
-                onClick={() => save()}
-              >
-                Salvar
-              </Fab>
-            )}
-
+            <Fab
+              variant="extended"
+              color="primary"
+              aria-label="add"
+              className={classes.margin}
+              onClick={() => save()}
+            >
+              Salvar
+            </Fab>
+            )
             <Fab
               variant="extended"
               color="secondary"
