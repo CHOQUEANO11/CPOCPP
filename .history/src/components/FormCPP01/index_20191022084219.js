@@ -6,6 +6,7 @@ import Radio from '@material-ui/core/Radio';
 import Fab from '@material-ui/core/Fab';
 import { toast } from 'react-toastify';
 import Modal from '@material-ui/core/Modal';
+import CreateIcon from '@material-ui/icons/Create';
 import Backdrop from '@material-ui/core/Backdrop';
 
 import { Container, Form, Loading } from './styles';
@@ -350,6 +351,7 @@ export default function Information({ person, elogio, punicao, showForm }) {
                       className={classes.margin}
                       onClick={() => handleSave()}
                     >
+                      <CreateIcon color="primary" size={20} />
                       Salvar
                     </Fab>
                   )}

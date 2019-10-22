@@ -210,6 +210,7 @@ export default function Cpo() {
       {formCPP01 && (
         <FormCPP01
           person={person}
+          compete={compete}
           elogio={elogios.length}
           tempo={tempos}
           punicao={punicaos.length}
@@ -219,6 +220,7 @@ export default function Cpo() {
       {formCPP02 && (
         <FormCPP02
           person={person}
+          compete={compete}
           showForm={() => setFormCPP02(!formCPP02) + setBody(!body)}
         />
       )}

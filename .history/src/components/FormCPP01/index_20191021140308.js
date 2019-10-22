@@ -168,7 +168,7 @@ export default function Information({ person, elogio, punicao, showForm }) {
           <Grid container spacing={1}>
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                Foi condenado em processo criminal em primeira instância ou
+                Foi condenado em processo criminal em primeira instância,
                 condenado a pena restritiva de liberdade?: Sim
                 <Radio
                   color="secondary"

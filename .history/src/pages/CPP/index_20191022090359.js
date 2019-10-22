@@ -210,6 +210,7 @@ export default function Cpo() {
       {formCPP01 && (
         <FormCPP01
           person={person}
+          compete={compete}
           elogio={elogios.length}
           tempo={tempos}
           punicao={punicaos.length}
@@ -219,6 +220,7 @@ export default function Cpo() {
       {formCPP02 && (
         <FormCPP02
           person={person}
+          compete={compete}
           showForm={() => setFormCPP02(!formCPP02) + setBody(!body)}
         />
       )}
@@ -434,16 +436,14 @@ export default function Cpo() {
                           FICHA DE AVALIAÇÃO DE DESEMPENHO PROFISSIONAL DO PRAÇA
                         </Typography>
                         <br />
-
                         <Typography
                           variant="body2"
                           style={{ color: '#EB144C' }}
                           component="p"
                         >
-                          {compete.formcpp02_id !== null ? (
-                            <strong>OK, já foi preenchido</strong>
-                          ) : (
-                            <strong>*clique para preencher</strong>
+                          *clique para preencher{' '}
+                          {compete.formcpp02_id !== null && (
+                            <strong> | Preenchido</strong>
                           )}
                         </Typography>
                       </CardContent>
@@ -471,17 +471,13 @@ export default function Cpo() {
                         <br />
                         <br />
                         <br />
-                        {compete.formcpp01_id === null && <br />}
+                        <br />
                         <Typography
                           variant="body2"
                           style={{ color: '#EB144C' }}
                           component="p"
                         >
-                          {compete.formcpp01_id !== null ? (
-                            <strong>OK, já foi preenchido</strong>
-                          ) : (
-                            <strong>*clique para preencher</strong>
-                          )}
+                          *clique para preencher
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -521,29 +517,23 @@ export default function Cpo() {
                       </Card>
                     )}
                 </ContainerInfo>
-                {compete.formcpp01_id !== null &&
-                  compete.formcpp02_id !== null && (
-                    <div
-                      style={{
-                        textAlign: 'right',
-                        marginRight: 45,
-                        marginTop: -10
-                      }}
-                    >
-                      <Fab
-                        variant="extended"
-                        color="secondary"
-                        aria-label="add"
-                        className={classes.margin}
-                      >
-                        Assinar{' '}
-                        <CreateIcon
-                          className={classes.extendedIcon}
-                          size={15}
-                        />
-                      </Fab>
-                    </div>
-                  )}
+                <div
+                  style={{
+                    textAlign: 'right',
+                    marginRight: 45,
+                    marginTop: -10
+                  }}
+                >
+                  <Fab
+                    variant="extended"
+                    color="secondary"
+                    aria-label="add"
+                    className={classes.margin}
+                  >
+                    Assinar{' '}
+                    <CreateIcon className={classes.extendedIcon} size={15} />
+                  </Fab>
+                </div>
               </>
             )}
           </Container>

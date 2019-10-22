@@ -210,6 +210,7 @@ export default function Cpo() {
       {formCPP01 && (
         <FormCPP01
           person={person}
+          compete={compete}
           elogio={elogios.length}
           tempo={tempos}
           punicao={punicaos.length}
@@ -219,6 +220,7 @@ export default function Cpo() {
       {formCPP02 && (
         <FormCPP02
           person={person}
+          compete={compete}
           showForm={() => setFormCPP02(!formCPP02) + setBody(!body)}
         />
       )}
@@ -431,22 +433,25 @@ export default function Cpo() {
                           style={{ fontSize: 16 }}
                           component="p"
                         >
-                          FICHA DE AVALIAÇÃO DE DESEMPENHO PROFISSIONAL DO PRAÇA
+                          FICHA DE AVALIAÇÃO DE DESEMPENHO PROFISSIONAL DO PRAÇA{' '}
+                          {compete.formcpp02_id !== null && (
+                            <strong style={{ color: '#EB144C' }}>
+                              {' '}
+                              | Preenchido
+                            </strong>
+                          )}
                         </Typography>
                         <br />
 
-                        <Typography
+
+                      </CardContent>
+                      <Typography
                           variant="body2"
-                          style={{ color: '#EB144C' }}
+                          style={{ color: '#EB144C', position: 'absolute' }}
                           component="p"
                         >
-                          {compete.formcpp02_id !== null ? (
-                            <strong>OK, já foi preenchido</strong>
-                          ) : (
-                            <strong>*clique para preencher</strong>
-                          )}
+                          *clique para preencher
                         </Typography>
-                      </CardContent>
                     </CardActionArea>
                   </Card>
                   &nbsp;&nbsp;
@@ -466,7 +471,13 @@ export default function Cpo() {
                           style={{ fontSize: 16 }}
                           component="p"
                         >
-                          FICHA DE INFORMAÇÃO FUNCIONAL
+                          FICHA DE INFORMAÇÃO FUNCIONAL{' '}
+                          {compete.formcpp01_id !== null && (
+                            <strong style={{ color: '#EB144C' }}>
+                              {' '}
+                              | Preenchido
+                            </strong>
+                          )}
                         </Typography>
                         <br />
                         <br />
@@ -477,11 +488,7 @@ export default function Cpo() {
                           style={{ color: '#EB144C' }}
                           component="p"
                         >
-                          {compete.formcpp01_id !== null ? (
-                            <strong>OK, já foi preenchido</strong>
-                          ) : (
-                            <strong>*clique para preencher</strong>
-                          )}
+                          *clique para preencher
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -521,29 +528,23 @@ export default function Cpo() {
                       </Card>
                     )}
                 </ContainerInfo>
-                {compete.formcpp01_id !== null &&
-                  compete.formcpp02_id !== null && (
-                    <div
-                      style={{
-                        textAlign: 'right',
-                        marginRight: 45,
-                        marginTop: -10
-                      }}
-                    >
-                      <Fab
-                        variant="extended"
-                        color="secondary"
-                        aria-label="add"
-                        className={classes.margin}
-                      >
-                        Assinar{' '}
-                        <CreateIcon
-                          className={classes.extendedIcon}
-                          size={15}
-                        />
-                      </Fab>
-                    </div>
-                  )}
+                <div
+                  style={{
+                    textAlign: 'right',
+                    marginRight: 45,
+                    marginTop: -10
+                  }}
+                >
+                  <Fab
+                    variant="extended"
+                    color="secondary"
+                    aria-label="add"
+                    className={classes.margin}
+                  >
+                    Assinar{' '}
+                    <CreateIcon className={classes.extendedIcon} size={15} />
+                  </Fab>
+                </div>
               </>
             )}
           </Container>

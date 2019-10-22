@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center'
   },
   extendedIcon: {
-    marginLeft: 10
+    marginRight: theme.spacing(1)
   },
   card: {
     maxWidth: 345,
@@ -101,7 +101,6 @@ export default function Cpo() {
   const [formCPP01, setFormCPP01] = useState(false);
   const [formCPP02, setFormCPP02] = useState(false);
   const [body, setBody] = useState(true);
-  const [compete, setCompete] = useState({});
 
   useEffect(() => {
     setLoading(true);
@@ -123,7 +122,6 @@ export default function Cpo() {
   async function handleSerachId(e) {
     await setImg(e.idpessoa.toString());
     await setLoading(true);
-    await setCompete(e);
 
     const searchPerson = await api.get(
       `api/v1/pessoa/condecoracao/find/${e.nome}`
@@ -434,17 +432,12 @@ export default function Cpo() {
                           FICHA DE AVALIAÇÃO DE DESEMPENHO PROFISSIONAL DO PRAÇA
                         </Typography>
                         <br />
-
                         <Typography
                           variant="body2"
                           style={{ color: '#EB144C' }}
                           component="p"
                         >
-                          {compete.formcpp02_id !== null ? (
-                            <strong>OK, já foi preenchido</strong>
-                          ) : (
-                            <strong>*clique para preencher</strong>
-                          )}
+                          *clique para preencher
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -471,17 +464,13 @@ export default function Cpo() {
                         <br />
                         <br />
                         <br />
-                        {compete.formcpp01_id === null && <br />}
+                        <br />
                         <Typography
                           variant="body2"
                           style={{ color: '#EB144C' }}
                           component="p"
                         >
-                          {compete.formcpp01_id !== null ? (
-                            <strong>OK, já foi preenchido</strong>
-                          ) : (
-                            <strong>*clique para preencher</strong>
-                          )}
+                          *clique para preencher
                         </Typography>
                       </CardContent>
                     </CardActionArea>
@@ -521,29 +510,22 @@ export default function Cpo() {
                       </Card>
                     )}
                 </ContainerInfo>
-                {compete.formcpp01_id !== null &&
-                  compete.formcpp02_id !== null && (
-                    <div
-                      style={{
-                        textAlign: 'right',
-                        marginRight: 45,
-                        marginTop: -10
-                      }}
-                    >
-                      <Fab
-                        variant="extended"
-                        color="secondary"
-                        aria-label="add"
-                        className={classes.margin}
-                      >
-                        Assinar{' '}
-                        <CreateIcon
-                          className={classes.extendedIcon}
-                          size={15}
-                        />
-                      </Fab>
-                    </div>
-                  )}
+                <div
+                  style={{
+                    textAlign: 'right',
+                    marginRight: 40,
+                    marginTop: -10
+                  }}
+                >
+                  <Fab
+                    variant="extended"
+                    color="secondary"
+                    aria-label="add"
+                    className={classes.margin}
+                  >
+                    Assinar <CreateIcon size={20} />
+                  </Fab>
+                </div>
               </>
             )}
           </Container>

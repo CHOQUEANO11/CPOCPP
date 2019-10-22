@@ -33,7 +33,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Information({ person, elogio, punicao, showForm }) {
+export default function Information({
+  person,
+  elogio,
+  punicao,
+  showForm,
+  compete
+}) {
   const [checkPCPI, setCheckPCPI] = useState(false);
   const [checkARorDFAC, setCheckARorDFAC] = useState(false);
   const [checkPPorFD, setCheckPPorFD] = useState(false);
