@@ -525,11 +525,7 @@ export default function Cpo() {
                               }}
                               component="p"
                             >
-                              {compete.formcpp03_id !== null ? (
-                                <strong>OK, já foi preenchido</strong>
-                              ) : (
-                                <strong>*clique para preencher</strong>
-                              )}
+                              *clique para preencher
                             </Typography>
                           </CardContent>
                         </CardActionArea>

@@ -497,10 +497,7 @@ export default function Cpo() {
                   &nbsp;&nbsp;
                   {person.Graduacao.hierarquia > 6 &&
                     person.Graduacao.hierarquia < 17 && (
-                      <Card
-                        className={classes.card}
-                        onClick={() => setBody(false) + setFormCPP03(true)}
-                      >
+                      <Card className={classes.card}>
                         <CardActionArea>
                           <CardMedia
                             className={classes.media}
@@ -525,11 +522,7 @@ export default function Cpo() {
                               }}
                               component="p"
                             >
-                              {compete.formcpp03_id !== null ? (
-                                <strong>OK, já foi preenchido</strong>
-                              ) : (
-                                <strong>*clique para preencher</strong>
-                              )}
+                              *clique para preencher
                             </Typography>
                           </CardContent>
                         </CardActionArea>

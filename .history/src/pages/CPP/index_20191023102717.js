@@ -525,7 +525,7 @@ export default function Cpo() {
                               }}
                               component="p"
                             >
-                              {compete.formcpp03_id !== null ? (
+                              {compete.formcpp01_id !== null ? (
                                 <strong>OK, já foi preenchido</strong>
                               ) : (
                                 <strong>*clique para preencher</strong>
