@@ -107,7 +107,6 @@ export default function Potentials({ person, showForm }) {
   const [cpQtd, setCpQtd] = useState(0);
   const [cpResult, setCpResult] = useState(0);
   const [idpessoa, setIdpessoa] = useState(0);
-  const [status, setStatus] = useState(false);
 
   useEffect(() => {
     async function personInformation() {
@@ -115,61 +114,6 @@ export default function Potentials({ person, showForm }) {
       await setIdpessoa(info.idpessoa);
     }
 
-    async function handleGetForm() {
-      const response = await apiInternal.get(`formcpp03/${person.idpessoa}`);
-      setTefpoiEs(response.data.tefpoies);
-      setTefpoiQtd(response.data.tefpoiqtd);
-      setTefpoiResult(response.data.tefpoiresult);
-      setTefpnpEs(response.data.tefpnpes);
-      setTefpnpQtd(response.data.tefpoiqtd);
-      setTefpnpResult(response.data.tefpnpresult);
-      setOlmpheacpadsEs(response.data.olmpheacpadses);
-      setOlmpheacpadsQtd(response.data.olmpheacpadsqtd);
-      setOlmpheacpadsResult(response.data.olmpheacpadsresult);
-      setHedpmEs(response.data.hedpmes);
-      setHedpmQtd(response.data.hedpmqtd);
-      setHedpmResult(response.data.hedpmresult);
-      setCas(JSON.parse(response.data.cas));
-      setCfp(JSON.parse(response.data.cfp));
-      setPdoutoradoEs(response.data.pdoutoradoes);
-      setPdoutoradoQtd(response.data.pdoutoradoqtd);
-      setPdoutoradoResult(response.data.pdoutoradoresult);
-      setDoutoradoEs(response.data.doutoradoes);
-      setDoutoradoQtd(response.data.doutoradoqtd);
-      setDoutoradoResult(response.data.doutoradoresult);
-      setMestradoEs(response.data.mestradoes);
-      setMestradoQtd(response.data.mestradoqtd);
-      setMestradoResult(response.data.mestradoresult);
-      setPgraduacaoEs(response.data.pgraduacaoes);
-      setPgraduacaoQtd(response.data.pgraduacaoqtd);
-      setPgraduacaoResult(response.data.pgraduacaoresult);
-      setOmgp(JSON.parse(response.data.omgp));
-      setBa(JSON.parse(response.data.ba));
-      setOmcf(JSON.parse(response.data.omcf));
-      setMt(JSON.parse(response.data.mt));
-      setSm(JSON.parse(response.data.sm));
-      setGfc1(JSON.parse(response.data.gfc1));
-      setGfc2(JSON.parse(response.data.gfc2));
-      setGfc3(JSON.parse(response.data.gfc3));
-      setTs10(JSON.parse(response.data.ts10));
-      setTs20(JSON.parse(response.data.ts20));
-      setRepreensaoEs(response.data.repreensaoes);
-      setRepreensaoQtd(response.data.repreensaoqtd);
-      setRepreensaoResult(response.data.repreensaoresult);
-      setDetencaoEs(response.data.detencaoes);
-      setDetencaoQtd(response.data.detencaoqtd);
-      setDetencaoResult(response.data.detencaoresult);
-      setPrisaoEs(response.data.prisaoes);
-      setPrisaoQtd(response.data.prisaoqtd);
-      setPrisaoResult(response.data.prisaoresult);
-      setCpEs(response.data.cpes);
-      setCpQtd(response.data.cpqtd);
-      setCpResult(response.data.cpresult);
-      setStatus(response.data.status);
-      console.log(response.data.gfc2);
-    }
-
-    handleGetForm();
     personInformation();
   }, []);
 
@@ -293,14 +237,14 @@ export default function Potentials({ person, showForm }) {
     setCpResult(result);
   }
 
-  async function handleSave() {
+  function handleSave() {
     try {
-      const response = await apiInternal.post('formcpp03', {
+      const response = apiInternal.post('formcpp03', {
         idpreechedor: idpessoa,
         idpessoa: person.idpessoa,
         tefpoies: tefpoiEs,
-        tefpoiqtd: tefpoiQtd,
-        tefpoiresult: tefpoiResult,
+        tefpoiqtd: tefpnpQtd,
+        tefpoiresult: tefpnpResult,
         tefpnpes: tefpnpEs,
         tefpnpqtd: tefpnpQtd,
         tefpnpresult: tefpnpResult,
@@ -348,18 +292,17 @@ export default function Potentials({ person, showForm }) {
         cpresult: cpResult,
         status: true
       });
-      await setStatus(response.data.status);
-      await toast.success('Dados cadastrados com sucesso');
-    } catch {
-      toast.error('Não foi possivel completar a operação, verifique os dados');
+    } catch () {
+
     }
+
+    console.log(response.data);
   }
 
   return (
     <Container>
       <h3 style={{ textAlign: 'center' }}>
-        FORMULÁRIO DE AVALIAÇÃO DE POTENCIAL E EXPERIÊNCIA PROFISSIONAL{' '}
-        {status && <strong>Finalizado</strong>}
+        FORMULÁRIO DE AVALIAÇÃO DE POTENCIAL E EXPERIÊNCIA PROFISSIONAL
       </h3>
       <hr />
       <Form>
@@ -1333,17 +1276,15 @@ export default function Potentials({ person, showForm }) {
           </Grid>
         </Grid>
         <div style={{ textAlign: 'right', marginBottom: 5, marginTop: 5 }}>
-          {!status && (
-            <Fab
-              variant="extended"
-              color="primary"
-              aria-label="add"
-              className={classes.margin}
-              onClick={() => handleSave()}
-            >
-              Salvar
-            </Fab>
-          )}
+          <Fab
+            variant="extended"
+            color="primary"
+            aria-label="add"
+            className={classes.margin}
+            onClick={() => handleSave()}
+          >
+            Salvar
+          </Fab>
 
           <Fab
             variant="extended"

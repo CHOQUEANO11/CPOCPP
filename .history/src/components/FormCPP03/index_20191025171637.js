@@ -149,8 +149,8 @@ export default function Potentials({ person, showForm }) {
       setMt(JSON.parse(response.data.mt));
       setSm(JSON.parse(response.data.sm));
       setGfc1(JSON.parse(response.data.gfc1));
-      setGfc2(JSON.parse(response.data.gfc2));
-      setGfc3(JSON.parse(response.data.gfc3));
+      // setGfc2(JSON.parse(response.data.gtc2));
+      // setGfc3(JSON.parse(response.data.gtc3));
       setTs10(JSON.parse(response.data.ts10));
       setTs20(JSON.parse(response.data.ts20));
       setRepreensaoEs(response.data.repreensaoes);
@@ -166,7 +166,6 @@ export default function Potentials({ person, showForm }) {
       setCpQtd(response.data.cpqtd);
       setCpResult(response.data.cpresult);
       setStatus(response.data.status);
-      console.log(response.data.gfc2);
     }
 
     handleGetForm();
